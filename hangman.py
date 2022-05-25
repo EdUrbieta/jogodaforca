@@ -114,7 +114,7 @@ def jogar(palavra):
 
 
 def forca_display(tentativas):
-    estagios = [  # final state: head, torso, both arms, and both legs
+    estagios = [  # estado final
         """
                    --------
                    |      |
@@ -124,7 +124,7 @@ def forca_display(tentativas):
                    |     / \\
                    -
                 """,
-        # head, torso, both arms, and one leg
+        # cabeça, tronco, dois braços e uma perna
         """
                    --------
                    |      |
@@ -134,7 +134,7 @@ def forca_display(tentativas):
                    |     / 
                    -
                 """,
-        # head, torso, and both arms
+        # cabeça tronco e dois braços
         """
                    --------
                    |      |
@@ -144,7 +144,7 @@ def forca_display(tentativas):
                    |      
                    -
                 """,
-        # head, torso, and one arm
+        # cabeça tronco e braço
         """
                    --------
                    |      |
@@ -154,7 +154,7 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-        # head and torso
+        # cabeça e tronco
         """
                    --------
                    |      |
@@ -164,7 +164,7 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-        # head
+        # cabeça
         """
                    --------
                    |      |
@@ -174,7 +174,7 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-        # initial empty state
+        # estado inicial
         """
                    --------
                    |      |
