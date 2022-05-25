@@ -1,6 +1,10 @@
 import random
+from frutas import frutasList
+from paises import paisesList
+from linguas import linguasLista
 
 nome = str(input('INFORME SEU NOME: ')).upper().strip()
+
 
 def menu():
     print('>' * 20, 'UNIESP'.center(20), '<' * 20)
@@ -11,10 +15,10 @@ def menu():
     print('#'.ljust(15), ' '.center(30), '#'.rjust(15))
     print('#'.ljust(15), 'MENU DE CATEGORIAS'.center(30), '#'.rjust(15))
     print('#'.ljust(15), ' '.center(30), '#'.rjust(15))
-    print('#'.ljust(15), '[1] Frutas'.center(15), '#'.rjust(23))
-    print('#'.ljust(15), '[2] Países da Europa'.center(15), '#'.rjust(25))
-    print('#'.ljust(15), '[3] Línguas Neolatinas'.center(15), '#'.rjust(24))
-    print('#'.ljust(15), '[0] SAIR DO JOGO'.center(5), '#'.rjust(29))
+    print('#'.ljust(15), '[F] Frutas'.center(15), '#'.rjust(23))
+    print('#'.ljust(15), '[P] Países da Europa'.center(15), '#'.rjust(25))
+    print('#'.ljust(15), '[L] Línguas Neolatinas'.center(15), '#'.rjust(24))
+    print('#'.ljust(15), '[S] SAIR DO JOGO'.center(5), '#'.rjust(29))
     print('#'.ljust(15), ' '.center(30), '#'.rjust(15))
     print('#'.ljust(3), 'Grupo:', '#'.rjust(51))
     print('#'.ljust(3), 'Brunno Medeiros - 2022111510029@iesp.edu.br', '#'.rjust(14))
@@ -24,91 +28,94 @@ def menu():
     print('#'.ljust(3), 'Ianny Mamedes - 2022111510025@iesp.edu.br', '#'.rjust(16))
     print('#'.ljust(15), ' '.center(30), '#'.rjust(15))
     print('#' * 62)
+
+
 menu()
 print()
 
-tema = int(input("Vamos agora selecionar o tema que deseja jogar!: "))
 
-if tema == 1:
-    from frutas import frutasList
-    listaSelecionada = frutasList
-    print("Você selecionou a categoria FRUTAS!")
-elif tema == 2:
-    from paises import paisesList
-    listaSelecionada = paisesList
-    print("Você selecionou a categoria PAÍSES DA EUROPA!")
-elif tema == 3:
-    from linguas import linguasLista
-    listaSelecionada = linguasLista
-    print("Você selecionou a categoria LÍNGUAS NEOLATINAS!")
-elif tema == '0':
-    print('Opção Escolhida: SAIR DO JOGO')
-    print('Jogo encerrando...')
-    print('Jogo encerrado!')  # colocar temporizador
-else:
-    print('Opção Inválida. Tente outra vez!')
-    print('''
-                [1] FRUTAS
-                [2] PAÍSES DA EUROPA
-                [3] LÍNGUAS NEOLATINAS
-                [0] SAIR DO JOGO''')
+def obter_palavra():
+    global listaSelecionada
+    categoria = str(input("Vamos selecionar uma categoria!" '''
+                    [F] FRUTAS
+                    [P] PAÍSES DA EUROPA
+                    [L] LÍNGUAS NEOLATINAS
+                    [S] SAIR DO JOGO:\n'''))
 
-def obterpalavra():
+    if categoria.upper() == 'F':
+        listaSelecionada = frutasList
+    elif categoria.upper() == 'P':
+        listaSelecionada = paisesList
+    elif categoria.upper() == 'L':
+        listaSelecionada = linguasLista
+    elif categoria.upper() == 'S':
+        print("Opção Escolhida: SAIR DO JOGO")
+        exit()
+    else:
+        categoria = input("Vamos selecionar uma categoria!" '''
+                    [F] FRUTAS
+                    [P] PAÍSES DA EUROPA
+                    [L] LÍNGUAS NEOLATINAS
+                    [S] SAIR DO JOGO:\n''')
+
     palavra = random.choice(listaSelecionada)
     return palavra.upper()
 
+
 def jogar(palavra):
-    compleicao_palavra = "_" * len(palavra)
+    para_completar = "_" * len(palavra)
     adivinhado = False
-    letras_adivinhadas = []
-    palavras_adivinhadas = []
+    letras_adv = []
+    palavras_adv = []
     tentativas = 6
-    print("Vamos jogar o Jogo da Forca!")
+    print("Vamos jogar!")
     print(forca_display(tentativas))
-    print(compleicao_palavra)
+    print(para_completar)
     print("\n")
+
     while not adivinhado and tentativas > 0:
-        adivinhar = input("Tente adivinhar uma letra ou a palavra! ").upper()
-        if len(adivinhar) == 1 and adivinhar.isalpha():
-            if adivinhar in letras_adivinhadas:
-                print("Você já adivinhou esta letra! ", adivinhar)
-            elif adivinhar not in letras_adivinhadas:
-                print(adivinhar, "não está na palavra!")
+        adv = input("Por favor tente adivinhar!: ").upper()
+        if len(adv) == 1 and adv.isalpha():
+            if adv in letras_adv:
+                print("Você já adivinhou essa letra!", adv)
+            elif adv not in palavra:
+                print(adv, "Não está na palavra!")
                 tentativas -= 1
-                letras_adivinhadas.append(adivinhar)
+                letras_adv.append(adv)
             else:
-                print("Boa!", adivinhar, "está na palavra!")
-                letras_adivinhadas.append(adivinhar)
-                palavra_como_lista = list(compleicao_palavra)
-                indices = [i for i, letra in enumerate(palavra) if letra == adivinhar]
+                print("Bom trabalho!", adv, "é a palavra!")
+                letras_adv.append(adv)
+                plv_lista = list(para_completar)
+                indices = [i for i, letra in enumerate(palavra) if letra == adv]
                 for index in indices:
-                    palavra_como_lista[index] = adivinhar
-                compleicao_palavra = "".join(palavra_como_lista)
-                if "_" not in compleicao_palavra:
+                    plv_lista[index] = adv
+                para_completar = ''.join(plv_lista)
+                if "_" not in para_completar:
                     adivinhado = True
-        elif len(adivinhar) == len(palavra) and adivinhar.isalpha():
-            if adivinhar in palavras_adivinhadas:
-                print("Você já adivinhou a palavra!", adivinhar)
-            elif adivinhar != palavra:
-                print(adivinhar, "não é a palavra!")
+        elif len(adv) == len(palavra) and adv.isalpha():
+            if adv in palavras_adv:
+                print("Você já adivinhou esta palavra!", adv)
+            elif adv != palavra:
+                print(adv, "não é a palavra!")
                 tentativas -= 1
-                palavras_adivinhadas.append(adivinhar)
+                palavras_adv.append(adv)
             else:
                 adivinhado = True
-                compleicao_palavra = palavra
+                para_completar = palavra
         else:
-            print("Erroooou!")
+            print("Por favor insira um valor válido!")
         print(forca_display(tentativas))
-        print(compleicao_palavra)
+        print(para_completar)
         print("\n")
     if adivinhado:
-        print("Parabéns mlk! Cê conseguiu em!")
+        print("Você é bom mesmo em menino! Adivinhou a palavra!", palavra)
     else:
-        print("Parece que não deu não em... Complicado parça... Te contar que a palavra era: " + palavra)
+        print("Iih... Foi bom não em, a palavra era: ", palavra)
+
 
 def forca_display(tentativas):
     estagios = [  # final state: head, torso, both arms, and both legs
-                """
+        """
                    --------
                    |      |
                    |      O
@@ -117,8 +124,8 @@ def forca_display(tentativas):
                    |     / \\
                    -
                 """,
-                # head, torso, both arms, and one leg
-                """
+        # head, torso, both arms, and one leg
+        """
                    --------
                    |      |
                    |      O
@@ -127,8 +134,8 @@ def forca_display(tentativas):
                    |     / 
                    -
                 """,
-                # head, torso, and both arms
-                """
+        # head, torso, and both arms
+        """
                    --------
                    |      |
                    |      O
@@ -137,8 +144,8 @@ def forca_display(tentativas):
                    |      
                    -
                 """,
-                # head, torso, and one arm
-                """
+        # head, torso, and one arm
+        """
                    --------
                    |      |
                    |      O
@@ -147,8 +154,8 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-                # head and torso
-                """
+        # head and torso
+        """
                    --------
                    |      |
                    |      O
@@ -157,8 +164,8 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-                # head
-                """
+        # head
+        """
                    --------
                    |      |
                    |      O
@@ -167,8 +174,8 @@ def forca_display(tentativas):
                    |     
                    -
                 """,
-                # initial empty state
-                """
+        # initial empty state
+        """
                    --------
                    |      |
                    |      
@@ -180,12 +187,14 @@ def forca_display(tentativas):
     ]
     return estagios[tentativas]
 
+
 def main():
-    palavra = obterpalavra()
+    palavra = obter_palavra()
     jogar(palavra)
-    while input("Quer jogar de novo? (S/N) ").upper() == "S":
-        palavra = obterpalavra()
+    while input("Quer jogar de novo? (S/N): ").upper() == 'S':
+        palavra = obter_palavra()
         jogar(palavra)
+
 
 if __name__ == "__main__":
     main()
